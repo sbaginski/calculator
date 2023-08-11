@@ -17,6 +17,19 @@ function divide(a, b) {
   return a / b;
 }
 
+function operate(operator, rightOperand, leftOperand) {
+  switch (operator) {
+    case "+":
+      return add(rightOperand, leftOperand);
+    case "-":
+      return subtract(rightOperand, leftOperand);
+    case "*":
+      return multiply(rightOperand, leftOperand);
+    case "/":
+      return divide(rightOperand, leftOperand);
+  }
+}
+
 (function() {
   let firstNumber;
   let secondNumber;
