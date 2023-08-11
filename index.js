@@ -1,3 +1,5 @@
+// Operation functions
+
 function add(a, b) {
   return a + b;
 }
@@ -17,6 +19,8 @@ function divide(a, b) {
   return a / b;
 }
 
+// Operate function
+
 function operate(operator, rightOperand, leftOperand) {
   switch (operator) {
     case "+":
@@ -30,10 +34,14 @@ function operate(operator, rightOperand, leftOperand) {
   }
 }
 
+// Helper functions
+
 function display(value) {
   const displayBox = document.querySelector("#display-value");
   displayBox.textContent = value;
 }
+
+// Main code
 
 (function() {
   const numberButtons = document.querySelectorAll(".key.number");
