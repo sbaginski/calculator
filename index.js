@@ -96,6 +96,7 @@ function roundNumber() {
   const numberButtons = document.querySelectorAll(".key.number");
   const operationButtons = document.querySelectorAll(".key.operation");
   const clearButton = document.querySelector("#clear");
+  const deleteButton = document.querySelector("#delete");
 
   let displayValue = getDisplayValue();
   let evaluated = false;
@@ -159,5 +160,13 @@ function roundNumber() {
     firstNumber = null;
     secondNumber = null;
     clearButton.textContent = "AC";
+  });
+
+  deleteButton.addEventListener("click", () => {
+    if (displayValue === "0" || evaluated) {
+      return;
+    }
+    displayValue = displayValue.length === 1 ? "0" : displayValue.slice(0, -1);
+    display(displayValue);
   });
 })();
