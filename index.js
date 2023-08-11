@@ -42,10 +42,27 @@ function blink(setValue) {
   return new Promise((resolve) => {
     setTimeout(() => {
       display(setValue);
+      try {
+        roundNumber();
+      } finally {}
       displayBox.style.visibility = "visible";
       resolve();
     }, 75);
   });
+}
+
+function countDecimals(number) {
+  if (Math.floor(number.valueOf()) === number.valueOf()) {
+    return 0;
+  }
+
+  let str = number.toString();
+  if (str.indexOf(".") !== -1 && str.indexOf("-") !== -1) {
+    return str.split("-")[1] || 0;
+  } else if (str.indexOf(".") !== -1) {
+    return str.split(".")[1].length || 0;
+  }
+  return str.split("-")[1] || 0;
 }
 
 function display(value) {
@@ -56,6 +73,21 @@ function display(value) {
 function getDisplayValue() {
   const displayBox = document.querySelector("#display-value");
   return displayBox.textContent;
+}
+
+function isOverflown(element) {
+  return element.scrollHeight > element.clientHeight 
+        || element.scrollWidth > element.clientWidth;
+}
+
+function roundNumber() {
+  const displayBox = document.querySelector("#display-value");
+  let n = countDecimals(+displayBox.textContent);
+  
+  while (isOverflown(displayBox)) {
+    n--;
+    display(Math.round(10**n * +displayBox.textContent) / 10**n);
+  }
 }
 
 // Main code
