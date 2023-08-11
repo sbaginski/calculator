@@ -150,4 +150,14 @@ function roundNumber() {
       evaluated = true;
     });
   });
+
+  clearButton.addEventListener("click", async () => {
+    await blink("0");
+    displayValue = getDisplayValue();
+    evaluated = false;
+    operator = "";
+    firstNumber = null;
+    secondNumber = null;
+    clearButton.textContent = "AC";
+  });
 })();
