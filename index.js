@@ -21,24 +21,41 @@ function divide(a, b) {
 
 // Operate function
 
-function operate(operator, rightOperand, leftOperand) {
-  switch (operator) {
-    case "+":
+function operate(operation, rightOperand, leftOperand) {
+  switch (operation) {
+    case "add":
       return add(rightOperand, leftOperand);
-    case "-":
+    case "subtract":
       return subtract(rightOperand, leftOperand);
-    case "*":
+    case "multiply":
       return multiply(rightOperand, leftOperand);
-    case "/":
+    case "divide":
       return divide(rightOperand, leftOperand);
   }
 }
 
 // Helper functions
 
+function blink(setValue) {
+  const displayBox = document.querySelector("#display-value");
+  displayBox.style.visibility = "hidden";
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      display(setValue);
+      displayBox.style.visibility = "visible";
+      resolve();
+    }, 75);
+  });
+}
+
 function display(value) {
   const displayBox = document.querySelector("#display-value");
   displayBox.textContent = value;
+}
+
+function getDisplayValue() {
+  const displayBox = document.querySelector("#display-value");
+  return displayBox.textContent;
 }
 
 // Main code
@@ -48,14 +65,14 @@ function display(value) {
   const operationButtons = document.querySelectorAll(".key.operation");
   const clearButton = document.querySelector("#clear");
 
-  let displayValue = document.querySelector("#display-value").textContent;
+  let displayValue = getDisplayValue();
+  let evaluated = false;
+  let operator = "";
   let firstNumber;
   let secondNumber;
-  let operator;
   
   numberButtons.forEach((button) => {
     if (button.id === "decimal") {
-      console.log(button.id);
       button.addEventListener("click", () => {
         if (!displayValue.includes(".")) {
           displayValue += ".";
@@ -65,17 +82,41 @@ function display(value) {
       });
     } else {
       button.addEventListener("click", () => {
-        switch (displayValue) {
-          case "0":
-            displayValue = button.textContent;
-            break;
-          default:
-            displayValue += button.textContent;
-            break;
+        if (displayValue === "0" || evaluated) {
+          displayValue = button.textContent;
+          evaluated = false;
+        } else {
+          displayValue += button.textContent;
         }
         display(displayValue);
         clearButton.textContent = "C";
       });
     }
+  });
+
+  operationButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (operator === "") {
+        firstNumber = +displayValue;
+        await blink(displayValue);
+        operator = button.id;
+      } else {
+        secondNumber = +displayValue;
+        try {
+          await blink(operate(operator, firstNumber, secondNumber));
+          displayValue = getDisplayValue();
+          firstNumber = +displayValue;
+        } catch (error) {
+          await blink("Not a number");
+          firstNumber = displayValue;
+        }
+        if (button.id === "equals") {
+          operator = "";
+        } else {
+          operator = button.id;
+        }
+      }
+      evaluated = true;
+    });
   });
 })();
