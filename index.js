@@ -131,7 +131,6 @@ function roundNumber() {
       if (operator === "") {
         firstNumber = +displayValue;
         await blink(displayValue);
-        operator = button.id;
       } else {
         secondNumber = +displayValue;
         try {
@@ -142,11 +141,11 @@ function roundNumber() {
           await blink("Not a number");
           firstNumber = displayValue;
         }
-        if (button.id === "equals") {
-          operator = "";
-        } else {
-          operator = button.id;
-        }
+      }
+      if (button.id === "equals") {
+        operator = "";
+      } else {
+        operator = button.id;
       }
       evaluated = true;
     });
