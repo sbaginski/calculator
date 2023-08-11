@@ -97,6 +97,7 @@ function roundNumber() {
   const operationButtons = document.querySelectorAll(".key.operation");
   const clearButton = document.querySelector("#clear");
   const deleteButton = document.querySelector("#delete");
+  const negateButton = document.querySelector("#negate");
 
   let displayValue = getDisplayValue();
   let evaluated = false;
@@ -167,6 +168,14 @@ function roundNumber() {
       return;
     }
     displayValue = displayValue.length === 1 ? "0" : displayValue.slice(0, -1);
+    display(displayValue);
+  });
+
+  negateButton.addEventListener("click", () => {
+    if (displayValue === "0") {
+      return;
+    }
+    displayValue = "-".concat(displayValue);
     display(displayValue);
   });
 })();
