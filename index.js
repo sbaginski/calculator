@@ -30,8 +30,44 @@ function operate(operator, rightOperand, leftOperand) {
   }
 }
 
+function display(value) {
+  const displayBox = document.querySelector("#display-value");
+  displayBox.textContent = value;
+}
+
 (function() {
+  const numberButtons = document.querySelectorAll(".key.number");
+  const operationButtons = document.querySelectorAll(".key.operation");
+  const clearButton = document.querySelector("#clear");
+
+  let displayValue = document.querySelector("#display-value").textContent;
   let firstNumber;
   let secondNumber;
   let operator;
+  
+  numberButtons.forEach((button) => {
+    if (button.id === "decimal") {
+      console.log(button.id);
+      button.addEventListener("click", () => {
+        if (!displayValue.includes(".")) {
+          displayValue += ".";
+          display(displayValue);
+          clearButton.textContent = "C";
+        }
+      });
+    } else {
+      button.addEventListener("click", () => {
+        switch (displayValue) {
+          case "0":
+            displayValue = button.textContent;
+            break;
+          default:
+            displayValue += button.textContent;
+            break;
+        }
+        display(displayValue);
+        clearButton.textContent = "C";
+      });
+    }
+  });
 })();
